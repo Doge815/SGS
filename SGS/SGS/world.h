@@ -5,10 +5,12 @@
 class world
 {
 private:
-    std::vector<particle *> *particles;
+    particle *particles;
+	int numberOfParticles;
 public:
-    world(int numberOfParticles);
+    world(int numberOfParticles, float areaX, float areaY, float areaCoverage, float massFac, float massBase);
     void Step();
-    std::vector<particle> GetParticles();
+    particle* GetParticles();
+	int GetNumberOfParticles();
     ~world();
 };

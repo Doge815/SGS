@@ -6,7 +6,9 @@ class particle
 private:
     long *position;
     long *velocity;
+	long mass;
 public:
-    particle(long x, long y);
+    particle();
+	void SetPosition(long px, long py, long vx, long vy, long mass);
     ~particle();
 };

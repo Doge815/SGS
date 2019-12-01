@@ -1,9 +1,14 @@
 #include "particle.h"
 
-particle::particle(long x, long y)
+particle::particle()
 {
-    particle::position = {new long[2]{x, y}};
-    particle::velocity = {new long[2]{0, 0}};
+}
+
+void particle::SetPosition(long px, long py, long vx, long vy, long mass)
+{
+	particle::position = { new long[2]{px, py} };
+	particle::velocity = { new long[2]{vx, vy} };
+	particle::mass = mass;
 }
 
 particle::~particle()
