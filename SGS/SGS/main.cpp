@@ -1,10 +1,12 @@
 #include <SFML/Graphics.hpp>
 #include "world.h"
+#include "particle.h"
+const int dimensions = 2;
 
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
+    sf::CircleShape shape(2.f);
     shape.setFillColor(sf::Color::Green);
 
 	world* w = new world(100, 150, 150, 0.8f, 0.6f, 10);
@@ -19,10 +21,12 @@ int main()
         }
 
         window.clear();
-        window.draw(shape);
+		particle *p = w->GetParticles();
 		for (size_t i = 0; i < w->GetNumberOfParticles(); i++)
 		{
-
+			long* a = p[i].GetPosition();
+			shape.setPosition(a[0], a[1]);
+			window.draw(shape);
 		}
         window.display();
     }

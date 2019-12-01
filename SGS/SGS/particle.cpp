@@ -16,3 +16,8 @@ particle::~particle()
     delete position;
     delete velocity;
 }
+
+long *particle::GetPosition()
+{
+	return position;
+}
