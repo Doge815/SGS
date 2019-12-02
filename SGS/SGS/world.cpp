@@ -3,26 +3,48 @@
 #include "world.h"
 #include "particle.h"
 #include <math.h>
+#include <iostream>
+
+long RandomFloat(long a, long b);
 
 world::world(int numberOfParticles, float areaX, float areaY, float areaCoverage, float massFac, float massBase)
 {
-	world::numberOfParticles = numberOfParticles;
+	/*world::numberOfParticles = numberOfParticles;
 	world::particles = { new particle[numberOfParticles] };
     for (size_t i = 0; i < numberOfParticles; i++)
     {
 		long theta	= (long)(rand() / RAND_MAX * M_PI * 2);
 		long r		= (long)(rand() / RAND_MAX * areaX * areaCoverage);
-		long m = (long)(massFac * rand() / RAND_MAX * M_PI + massBase);
+		long m 		= (long)(massFac * rand() / RAND_MAX * M_PI + massBase);
 
 		long px		= (long)(cos(theta * M_PI / 180) * r);
 		long py		= (long)(sin(theta * M_PI / 180) * r);
 
+		//px = 100;
+		//py = 100;
+
 		long vx		= py / 500;
 		long vy		= -px / 500;
 		world::particles[i].SetPosition(py, px, vx, vy, m);
+		}*/
+		
+		srand(time(NULL));
+		world::numberOfParticles = 1;
+		world::particles = new particle();
+		long theta	= (long)(rand() / ((float)RAND_MAX) * M_PI * 2);
+		long r		= (long)(rand() / ((float)RAND_MAX) * areaX);
+		long m 		= (long)(rand() / ((float)RAND_MAX) * M_PI + massBase);
+
+		long px		= (long)(cos(theta * M_PI / 180) * r);
+		long py		= (long)(sin(theta * M_PI / 180) * r);
+
+		//px = 100;
+		//py = 100;
+
+		long vx		= py / 500;
+		long vy		= -px / 500;
+		world::particles->SetPosition(py, px, vx, vy, m);
     }
-    
-}
 
 world::~world()
 {

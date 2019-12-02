@@ -7,7 +7,7 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
     sf::CircleShape shape(2.f);
-    shape.setFillColor(sf::Color::Green);
+    shape.setFillColor(sf::Color::White);
 
 	world* w = new world(100, 150, 150, 0.8f, 0.6f, 10);
 
