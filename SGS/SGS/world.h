@@ -2,15 +2,15 @@
 #include<vector>
 #include"particle.h"
 
-class world
+class World
 {
 private:
-    particle *particles;
+    Particle *particles;
 	int numberOfParticles;
 public:
-    world(int numberOfParticles, float areaX, float areaY, float areaCoverage, float massFac, float massBase);
+    World(int numberOfParticles, float areaX, float massFac, float massBase);
     void Step();
-    particle* GetParticles();
+    Particle* GetParticles();
 	int GetNumberOfParticles();
-    ~world();
+    ~World();
 };

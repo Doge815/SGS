@@ -1,15 +1,15 @@
 #pragma once
 #include<vector>
 
-class particle
+class Particle
 {
 private:
-    long *position;
-    long *velocity;
-	long mass;
+    double *position;
+    double *velocity;
+	double mass;
 public:
-    particle();
-	void SetPosition(long px, long py, long vx, long vy, long mass);
-	long *GetPosition();
-    ~particle();
+    Particle();
+	void SetPosition(double px, double py, double vx, double vy, double mass);
+	double *GetPosition();
+    ~Particle();
 };

@@ -1,23 +1,23 @@
 #include "particle.h"
 
-particle::particle()
+Particle::Particle()
 {
 }
 
-void particle::SetPosition(long px, long py, long vx, long vy, long mass)
+void Particle::SetPosition(double px, double py, double vx, double vy, double mass)
 {
-	particle::position = { new long[2]{px, py} };
-	particle::velocity = { new long[2]{vx, vy} };
-	particle::mass = mass;
+	Particle::position = { new double[2]{px, py} };
+	Particle::velocity = { new double[2]{vx, vy} };
+	Particle::mass = mass;
 }
 
-particle::~particle()
+Particle::~Particle()
 {
     delete position;
     delete velocity;
 }
 
-long *particle::GetPosition()
+double *Particle::GetPosition()
 {
 	return position;
 }

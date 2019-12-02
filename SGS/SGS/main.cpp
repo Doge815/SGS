@@ -5,11 +5,11 @@ const int dimensions = 2;
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(2.f);
+    sf::RenderWindow window(sf::VideoMode(500, 500), "SGS", sf::Style::Titlebar | sf::Style::Close);
+	sf::CircleShape shape(2.f);
     shape.setFillColor(sf::Color::White);
 
-	world* w = new world(100, 150, 150, 0.8f, 0.6f, 10);
+	World* w = new World(10000, 500, 0.6f, 10);
 
     while (window.isOpen())
     {
@@ -21,10 +21,10 @@ int main()
         }
 
         window.clear();
-		particle *p = w->GetParticles();
+		Particle *p = w->GetParticles();
 		for (size_t i = 0; i < w->GetNumberOfParticles(); i++)
 		{
-			long* a = p[i].GetPosition();
+			double* a = p[i].GetPosition();
 			shape.setPosition(a[0], a[1]);
 			window.draw(shape);
 		}

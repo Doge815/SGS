@@ -4,73 +4,55 @@
 #include "particle.h"
 #include <math.h>
 #include <iostream>
+#include<time.h>
 
-long RandomFloat(long a, long b);
+double RandomFloat(double a, double b);
 
-world::world(int numberOfParticles, float areaX, float areaY, float areaCoverage, float massFac, float massBase)
+World::World(int numberOfParticles, float areaX, float massFac, float massBase)
 {
-	/*world::numberOfParticles = numberOfParticles;
-	world::particles = { new particle[numberOfParticles] };
+	srand(time(NULL));
+	World::numberOfParticles = numberOfParticles;
+	World::particles = { new Particle[numberOfParticles] };
     for (size_t i = 0; i < numberOfParticles; i++)
     {
-		long theta	= (long)(rand() / RAND_MAX * M_PI * 2);
-		long r		= (long)(rand() / RAND_MAX * areaX * areaCoverage);
-		long m 		= (long)(massFac * rand() / RAND_MAX * M_PI + massBase);
+		double theta	= ((double)rand() / (RAND_MAX)* 360);
+		double r		= ((double)rand() / (RAND_MAX)* areaX / 2);
+		double m		= ((double)rand() / (RAND_MAX)* M_PI + massBase);
 
-		long px		= (long)(cos(theta * M_PI / 180) * r);
-		long py		= (long)(sin(theta * M_PI / 180) * r);
+		double px = cos(theta * M_PI / 180) * r + areaX / 2;
+		double py = sin(theta * M_PI / 180) * r + areaX / 2;
 
-		//px = 100;
-		//py = 100;
-
-		long vx		= py / 500;
-		long vy		= -px / 500;
-		world::particles[i].SetPosition(py, px, vx, vy, m);
-		}*/
-		
-		srand(time(NULL));
-		world::numberOfParticles = 1;
-		world::particles = new particle();
-		long theta	= (long)(rand() / ((float)RAND_MAX) * M_PI * 2);
-		long r		= (long)(rand() / ((float)RAND_MAX) * areaX);
-		long m 		= (long)(rand() / ((float)RAND_MAX) * M_PI + massBase);
-
-		long px		= (long)(cos(theta * M_PI / 180) * r);
-		long py		= (long)(sin(theta * M_PI / 180) * r);
-
-		//px = 100;
-		//py = 100;
-
-		long vx		= py / 500;
-		long vy		= -px / 500;
-		world::particles->SetPosition(py, px, vx, vy, m);
-    }
-
-world::~world()
-{
-	delete[] world::particles;
+		double vx = py / 500;
+		double vy = -px / 500;
+		World::particles[i].SetPosition(px, py, vx, vy, m);
+	}
 }
 
-void world::Step()
+World::~World()
 {
-    for (size_t i = 0; i < world::numberOfParticles; i++)
+	delete[] World::particles;
+}
+
+void World::Step()
+{
+    for (size_t i = 0; i < World::numberOfParticles; i++)
     {
     }
 }
 
-int world::GetNumberOfParticles()
+int World::GetNumberOfParticles()
 {
-	return world::numberOfParticles;
+	return World::numberOfParticles;
 }
 
-particle* world::GetParticles()
+Particle* World::GetParticles()
 {
-	return world::particles;
+	return World::particles;
 }
 
-long RandomFloat(long a, long b) {
-	long random = ((long)rand()) / (long)RAND_MAX;
-	long diff = b - a;
-	long r = random * diff;
+double RandomFloat(double a, double b) {
+	double random = ((double)rand()) / (double)RAND_MAX;
+	double diff = b - a;
+	double r = random * diff;
 	return a + r;
 }
