@@ -26,7 +26,7 @@ double* Particle::GetPosition()
 
 double* Particle::GetVelocity()
 {
-	return Particle::position;
+	return Particle::velocity;
 }
 
 double Particle::GetMass()
