@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "world.h"
 #include "particle.h"
-const int dimensions = 2;
+#include <iostream>
 
 int main()
 {
@@ -19,7 +19,7 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
         }
-
+        w->Step();
         window.clear();
 		Particle *p = w->GetParticles();
 		for (size_t i = 0; i < w->GetNumberOfParticles(); i++)
@@ -33,3 +33,4 @@ int main()
 
     return 0;
 }
+//g++ particle.h world.h && g++ -c main.cpp particle.cpp world.cpp && g++ main.o world.o particle.o -o sfml-app -lsfml-graphics -lsfml-window -lsfml-system && ./sfml-app

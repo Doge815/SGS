@@ -9,7 +9,13 @@ private:
 	double mass;
 public:
     Particle();
-	void SetPosition(double px, double py, double vx, double vy, double mass);
+	void SetPosition(double x, double y);
+    void SetVelocity(double x, double y);
+    void SetMass(double mass);
+
 	double *GetPosition();
+    double *GetVelocity();
+    double GetMass();
     ~Particle();
 };
+

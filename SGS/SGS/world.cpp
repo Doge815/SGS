@@ -22,9 +22,11 @@ World::World(int numberOfParticles, float areaX, float massFac, float massBase)
 		double px = cos(theta * M_PI / 180) * r + areaX / 2;
 		double py = sin(theta * M_PI / 180) * r + areaX / 2;
 
-		double vx = py / 500;
-		double vy = -px / 500;
-		World::particles[i].SetPosition(px, py, vx, vy, m);
+		double vx = py / 5000;
+		double vy = -px / 5000;
+		World::particles[i].SetPosition(px, py);
+		World::particles[i].SetVelocity(vx, vy);
+		World::particles[i].SetMass(m);
 	}
 }
 
@@ -37,6 +39,9 @@ void World::Step()
 {
     for (size_t i = 0; i < World::numberOfParticles; i++)
     {
+		double* v = particles[i].GetVelocity();
+		double* p = particles[i].GetPosition();
+		particles[i].SetPosition(v[0] + p[0], v[1] + p[1]);
     }
 }
 

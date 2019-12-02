@@ -4,20 +4,38 @@ Particle::Particle()
 {
 }
 
-void Particle::SetPosition(double px, double py, double vx, double vy, double mass)
+void Particle::SetPosition(double x, double y)
 {
-	Particle::position = { new double[2]{px, py} };
-	Particle::velocity = { new double[2]{vx, vy} };
+	Particle::position = { new double[2]{x, y} };
+}
+
+void Particle::SetVelocity(double x, double y)
+{
+	Particle::velocity = { new double[2]{x, y} };
+}
+
+void Particle::SetMass(double mass)
+{
 	Particle::mass = mass;
+}
+
+double* Particle::GetPosition()
+{
+	return Particle::position;
+}
+
+double* Particle::GetVelocity()
+{
+	return Particle::position;
+}
+
+double Particle::GetMass()
+{
+	return Particle::mass;
 }
 
 Particle::~Particle()
 {
     delete position;
     delete velocity;
-}
-
-double *Particle::GetPosition()
-{
-	return position;
 }
