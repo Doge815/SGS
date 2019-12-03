@@ -1,4 +1,7 @@
+#define _USE_MATH_DEFINES
+
 #include "particle.h"
+#include <math.h>
 
 Particle::Particle()
 {
@@ -32,6 +35,11 @@ double* Particle::GetVelocity()
 double Particle::GetMass()
 {
 	return Particle::mass;
+}
+
+double Particle::GetRad()
+{
+	return std::sqrt(GetMass() / M_PI);
 }
 
 Particle::~Particle()

@@ -16,6 +16,7 @@ public:
 	double *GetPosition();
     double *GetVelocity();
     double GetMass();
+    double GetRad();
     ~Particle();
 };
 

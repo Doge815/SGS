@@ -2,6 +2,7 @@
 #include "world.h"
 #include "particle.h"
 #include <iostream>
+#include <math.h>
 
 int main()
 {
@@ -9,7 +10,7 @@ int main()
 	sf::CircleShape shape(2.f);
     shape.setFillColor(sf::Color::White);
 
-	World* w = new World(100, 500, 0.6f, 10);
+	World* w = new World(100, 500, 10);
 
     while (window.isOpen())
     {
@@ -24,8 +25,10 @@ int main()
 		Particle **p = w->GetParticles();
 		for (size_t i = 0; i < w->GetNumberOfParticles(); i++)
 		{
+            if(p[i] == nullptr) continue;
 			double* a = p[i]->GetPosition();
 			shape.setPosition(a[0], a[1]);
+            shape.setRadius(std::ceil(p[i]->GetRad()));
 			window.draw(shape);
 		}
         window.display();

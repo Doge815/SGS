@@ -8,7 +8,7 @@
 
 double RandomFloat(double a, double b);
 
-World::World(int numberOfParticles, float areaX, float massFac, float massBase)
+World::World(int numberOfParticles, float area, float massBase)
 {
 	srand(time(NULL));
 	World::numberOfParticles = numberOfParticles;
@@ -16,14 +16,15 @@ World::World(int numberOfParticles, float areaX, float massFac, float massBase)
     for (size_t i = 0; i < numberOfParticles; i++)
     {
 		double theta	= ((double)rand() / (RAND_MAX));
-		double r		= ((double)rand() / (RAND_MAX)* areaX / 2);
+		double r		= ((double)rand() / (RAND_MAX)* area / 2);
 		double m		= ((double)rand() / (RAND_MAX)* M_PI + massBase);
 
-		double px = cos(theta * M_PI * 2) * r + areaX / 2;
-		double py = sin(theta * M_PI * 2) * r + areaX / 2;
+		double px = cos(theta * M_PI * 2) * r + area / 2;
+		double py = sin(theta * M_PI * 2) * r + area / 2;
 
-		double vx = (py - areaX / 2) / 5000;
-		double vy = -(px - areaX / 2) / 5000;
+		double vx = (py - area / 2) / 5000;
+		double vy = -(px - area / 2) / 5000;
+		World::particles[i] = new Particle();
 		World::particles[i]->SetPosition(px, py);
 		World::particles[i]->SetVelocity(vx,vy);
 		World::particles[i]->SetMass(m);
@@ -39,7 +40,7 @@ void World::Step()
 {
     for (size_t i = 0; i < World::numberOfParticles; i++)
     {
-		//if(particles[i] == nullptr) continue;
+		if(particles[i] == nullptr) continue;
 		double* v1 = particles[i]->GetVelocity();
 		double* p1 = particles[i]->GetPosition();
 		double  m1 = particles[i]->GetMass();
@@ -51,6 +52,12 @@ void World::Step()
 				double  m2 = particles[u]->GetMass();
 
 				double r = std::sqrt(std::pow(p2[0] - p1[0], 2) + std::pow(p2[1] - p1[1], 2));
+				if(r <= particles[i]->GetRad() + particles[u]->GetRad())
+				{
+					//particles[u]->SetMass(m1 + m2);
+					//particles[i] = nullptr;
+					//goto skip;
+				}
 				double f = m1 * m2 / std::pow(r, 2) / 1000;
 				double a = std::atan2(p2[1] - p1[1], p2[0] - p1[0]);
 				double fx = std::cos(a) * f;
@@ -60,9 +67,11 @@ void World::Step()
 			}
 		}
 		particles[i]->SetVelocity(v1[0], v1[1]);
+		skip:;
 	}
 	for (size_t i = 0; i < World::numberOfParticles; i++)
 	{
+		if(particles[i] == nullptr) continue;
 		double* v = particles[i]->GetVelocity();
 		double* p = particles[i]->GetPosition();
 		particles[i]->SetPosition(v[0] + p[0], v[1] + p[1]);
