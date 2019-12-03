@@ -5,12 +5,12 @@
 class World
 {
 private:
-    Particle *particles;
+    Particle **particles;
 	int numberOfParticles;
 public:
     World(int numberOfParticles, float areaX, float massFac, float massBase);
     void Step();
-    Particle* GetParticles();
+    Particle** GetParticles();
 	int GetNumberOfParticles();
     ~World();
 };

@@ -21,10 +21,10 @@ int main()
         }
         w->Step();
         window.clear();
-		Particle *p = w->GetParticles();
+		Particle **p = w->GetParticles();
 		for (size_t i = 0; i < w->GetNumberOfParticles(); i++)
 		{
-			double* a = p[i].GetPosition();
+			double* a = p[i]->GetPosition();
 			shape.setPosition(a[0], a[1]);
 			window.draw(shape);
 		}

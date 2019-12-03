@@ -12,7 +12,7 @@ World::World(int numberOfParticles, float areaX, float massFac, float massBase)
 {
 	srand(time(NULL));
 	World::numberOfParticles = numberOfParticles;
-	World::particles = { new Particle[numberOfParticles] };
+	World::particles = { new Particle*[numberOfParticles] };
     for (size_t i = 0; i < numberOfParticles; i++)
     {
 		double theta	= ((double)rand() / (RAND_MAX));
@@ -24,9 +24,9 @@ World::World(int numberOfParticles, float areaX, float massFac, float massBase)
 
 		double vx = (py - areaX / 2) / 5000;
 		double vy = -(px - areaX / 2) / 5000;
-		World::particles[i].SetPosition(px, py);
-		World::particles[i].SetVelocity(vx,vy);
-		World::particles[i].SetMass(m);
+		World::particles[i]->SetPosition(px, py);
+		World::particles[i]->SetVelocity(vx,vy);
+		World::particles[i]->SetMass(m);
 	}
 }
 
@@ -39,15 +39,16 @@ void World::Step()
 {
     for (size_t i = 0; i < World::numberOfParticles; i++)
     {
-		double* v1 = particles[i].GetVelocity();
-		double* p1 = particles[i].GetPosition();
-		double  m1 = particles[i].GetMass();
+		//if(particles[i] == nullptr) continue;
+		double* v1 = particles[i]->GetVelocity();
+		double* p1 = particles[i]->GetPosition();
+		double  m1 = particles[i]->GetMass();
 		for(size_t u = 0; u < World::numberOfParticles; u++)
 		{
 			if( i!= u)
 			{
-				double* p2 = particles[u].GetPosition();
-				double  m2 = particles[u].GetMass();
+				double* p2 = particles[u]->GetPosition();
+				double  m2 = particles[u]->GetMass();
 
 				double r = std::sqrt(std::pow(p2[0] - p1[0], 2) + std::pow(p2[1] - p1[1], 2));
 				double f = m1 * m2 / std::pow(r, 2) / 1000;
@@ -58,13 +59,13 @@ void World::Step()
 				v1[1] += fy;
 			}
 		}
-		particles[i].SetVelocity(v1[0], v1[1]);
+		particles[i]->SetVelocity(v1[0], v1[1]);
 	}
 	for (size_t i = 0; i < World::numberOfParticles; i++)
 	{
-		double* v = particles[i].GetVelocity();
-		double* p = particles[i].GetPosition();
-		particles[i].SetPosition(v[0] + p[0], v[1] + p[1]);
+		double* v = particles[i]->GetVelocity();
+		double* p = particles[i]->GetPosition();
+		particles[i]->SetPosition(v[0] + p[0], v[1] + p[1]);
 	}
 }
 
@@ -73,7 +74,7 @@ int World::GetNumberOfParticles()
 	return World::numberOfParticles;
 }
 
-Particle* World::GetParticles()
+Particle** World::GetParticles()
 {
 	return World::particles;
 }
