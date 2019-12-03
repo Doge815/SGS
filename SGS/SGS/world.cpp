@@ -38,6 +38,37 @@ World::~World()
 
 void World::Step()
 {
+	for (size_t i = 0; i < World::numberOfParticles; i++)
+	{
+		for (size_t u = 0; u < World::numberOfParticles; u++)
+		{
+			if(i != u && particles[i] != nullptr && particles[u] != nullptr)
+			{
+				double* p1 = particles[i]->GetPosition();
+				double* p2 = particles[u]->GetPosition();
+				double r = std::sqrt(std::pow(p2[0] - p1[0], 2) + std::pow(p2[1] - p1[1], 2));
+
+				if(r <= particles[i]->GetRad() + particles[u]->GetRad())
+				{
+					double* v1 = particles[i]->GetVelocity();
+					double  m1 = particles[i]->GetMass();
+					double* v2 = particles[u]->GetVelocity();
+					double  m2 = particles[u]->GetMass();
+					if(m1 > m2)
+					{
+						v2 = v1;
+						p2 = p1;
+					}
+					particles[u]->SetMass(m1 + m2);
+					particles[u]->SetVelocity(v2[0], v2[1]);
+					particles[u]->SetPosition(p2[0], p2[1]);
+					particles[i] = nullptr;
+				}
+			}
+		}
+		
+	}
+	
     for (size_t i = 0; i < World::numberOfParticles; i++)
     {
 		if(particles[i] == nullptr) continue;
@@ -53,12 +84,7 @@ void World::Step()
 				double  m2 = particles[u]->GetMass();
 
 				double r = std::sqrt(std::pow(p2[0] - p1[0], 2) + std::pow(p2[1] - p1[1], 2));
-				if(r <= particles[i]->GetRad() + particles[u]->GetRad())
-				{
-					particles[u]->SetMass(m1 + m2);
-					particles[i] = nullptr;
-					goto skip;
-				}
+				
 				double f = m1 * m2 / std::pow(r, 2) / 1000;
 				double a = std::atan2(p2[1] - p1[1], p2[0] - p1[0]);
 				double fx = std::cos(a) * f;
