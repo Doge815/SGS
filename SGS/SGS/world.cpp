@@ -48,15 +48,16 @@ void World::Step()
 		{
 			if( i!= u)
 			{
+				if(particles[u] == nullptr) continue;
 				double* p2 = particles[u]->GetPosition();
 				double  m2 = particles[u]->GetMass();
 
 				double r = std::sqrt(std::pow(p2[0] - p1[0], 2) + std::pow(p2[1] - p1[1], 2));
 				if(r <= particles[i]->GetRad() + particles[u]->GetRad())
 				{
-					//particles[u]->SetMass(m1 + m2);
-					//particles[i] = nullptr;
-					//goto skip;
+					particles[u]->SetMass(m1 + m2);
+					particles[i] = nullptr;
+					goto skip;
 				}
 				double f = m1 * m2 / std::pow(r, 2) / 1000;
 				double a = std::atan2(p2[1] - p1[1], p2[0] - p1[0]);

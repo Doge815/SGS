@@ -10,7 +10,7 @@ int main()
 	sf::CircleShape shape(2.f);
     shape.setFillColor(sf::Color::White);
 
-	World* w = new World(100, 500, 10);
+	World* w = new World(1000, 500, 10);
 
     while (window.isOpen())
     {
