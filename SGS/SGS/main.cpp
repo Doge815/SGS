@@ -1,39 +1,30 @@
 #include <SFML/Graphics.hpp>
-#include "world.h"
-#include "particle.h"
+#include "World.h"
+#include "Particle.h"
 #include <iostream>
 #include <math.h>
+#include "Camera.h"
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(500, 500), "SGS", sf::Style::Titlebar | sf::Style::Close);
-	sf::CircleShape shape(2.f);
-    shape.setFillColor(sf::Color::White);
-
-	World* w = new World(1000, 500, 10);
-
-    while (window.isOpen())
+    sf::RenderWindow *window = new sf::RenderWindow(sf::VideoMode(500, 500), "SGS", sf::Style::Titlebar | sf::Style::Close);
+	World *world = new World(100, 500, 100);
+    Camera *camera = new Camera(window, world); 
+    while (window->isOpen())
     {
         sf::Event event;
-        while (window.pollEvent(event))
+        while (window->pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
-                window.close();
+                window->close();
         }
-        w->Step();
-        window.clear();
-		Particle **p = w->GetParticles();
-		for (size_t i = 0; i < w->GetNumberOfParticles(); i++)
-		{
-            if(p[i] == nullptr) continue;
-			double* a = p[i]->GetPosition();
-			shape.setPosition(a[0], a[1]);
-            shape.setRadius(std::ceil(p[i]->GetRad()));
-			window.draw(shape);
-		}
-        window.display();
+
+        world->Step();
+        window->clear();
+		camera->DrawImage();
+        window->display();
     }
 
     return 0;
 }
-//g++ particle.h world.h && g++ -c main.cpp particle.cpp world.cpp && g++ main.o world.o particle.o -o SGS -lsfml-graphics -lsfml-window -lsfml-system && ./SGS
+//g++ Particle.h World.h Camera.h && g++ -c main.cpp Particle.cpp World.cpp Camera.cpp && g++ main.o World.o Particle.o Camera.o -o SGS -lsfml-graphics -lsfml-window -lsfml-system && ./SGS

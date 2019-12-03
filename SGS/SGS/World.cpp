@@ -1,7 +1,7 @@
 #define _USE_MATH_DEFINES
 
-#include "world.h"
-#include "particle.h"
+#include "World.h"
+#include "Particle.h"
 #include <math.h>
 #include <iostream>
 #include<time.h>
@@ -19,8 +19,8 @@ World::World(int numberOfParticles, float area, float massBase)
 		double r		= ((double)rand() / (RAND_MAX)* area / 2);
 		double m		= ((double)rand() / (RAND_MAX)* M_PI + massBase);
 
-		double px = cos(theta * M_PI * 2) * r + area / 2;
-		double py = sin(theta * M_PI * 2) * r + area / 2;
+		double px = cos(theta * M_PI * 2) * r;
+		double py = sin(theta * M_PI * 2) * r;
 
 		double vx = (py - area / 2) / 5000;
 		double vy = -(px - area / 2) / 5000;
@@ -95,7 +95,7 @@ void World::CalcVelocity()
 
 				double r = std::sqrt(std::pow(p2[0] - p1[0], 2) + std::pow(p2[1] - p1[1], 2));
 				
-				double f = m1 * m2 / std::pow(r, 2) / 10000;
+				double f = m1 * m2 / std::pow(r, 2) / 100000;
 				double a = std::atan2(p2[1] - p1[1], p2[0] - p1[0]);
 				double fx = std::cos(a) * f;
 				double fy = std::sin(a) * f;

@@ -1,6 +1,6 @@
 #define _USE_MATH_DEFINES
 
-#include "particle.h"
+#include "Particle.h"
 #include <math.h>
 
 Particle::Particle()
