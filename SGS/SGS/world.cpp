@@ -38,6 +38,13 @@ World::~World()
 
 void World::Step()
 {
+	MergeParticles();
+	CalcVelocity();
+	ApplyVelocity();
+}
+
+void World::MergeParticles()
+{
 	for (size_t i = 0; i < World::numberOfParticles; i++)
 	{
 		for (size_t u = 0; u < World::numberOfParticles; u++)
@@ -68,8 +75,11 @@ void World::Step()
 		}
 		
 	}
-	
-    for (size_t i = 0; i < World::numberOfParticles; i++)
+}
+
+void World::CalcVelocity()
+{
+	for (size_t i = 0; i < World::numberOfParticles; i++)
     {
 		if(particles[i] == nullptr) continue;
 		double* v1 = particles[i]->GetVelocity();
@@ -85,7 +95,7 @@ void World::Step()
 
 				double r = std::sqrt(std::pow(p2[0] - p1[0], 2) + std::pow(p2[1] - p1[1], 2));
 				
-				double f = m1 * m2 / std::pow(r, 2) / 1000;
+				double f = m1 * m2 / std::pow(r, 2) / 10000;
 				double a = std::atan2(p2[1] - p1[1], p2[0] - p1[0]);
 				double fx = std::cos(a) * f;
 				double fy = std::sin(a) * f;
@@ -96,6 +106,10 @@ void World::Step()
 		particles[i]->SetVelocity(v1[0], v1[1]);
 		skip:;
 	}
+}
+
+void World::ApplyVelocity()
+{
 	for (size_t i = 0; i < World::numberOfParticles; i++)
 	{
 		if(particles[i] == nullptr) continue;

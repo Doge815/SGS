@@ -12,5 +12,8 @@ public:
     void Step();
     Particle** GetParticles();
 	int GetNumberOfParticles();
+    void MergeParticles();
+    void CalcVelocity();
+    void ApplyVelocity();
     ~World();
 };
