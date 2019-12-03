@@ -9,7 +9,7 @@ int main()
 	sf::CircleShape shape(2.f);
     shape.setFillColor(sf::Color::White);
 
-	World* w = new World(10000, 500, 0.6f, 10);
+	World* w = new World(100, 500, 0.6f, 10);
 
     while (window.isOpen())
     {
@@ -33,4 +33,4 @@ int main()
 
     return 0;
 }
-//g++ particle.h world.h && g++ -c main.cpp particle.cpp world.cpp && g++ main.o world.o particle.o -o sfml-app -lsfml-graphics -lsfml-window -lsfml-system && ./sfml-app
+//g++ particle.h world.h && g++ -c main.cpp particle.cpp world.cpp && g++ main.o world.o particle.o -o SGS -lsfml-graphics -lsfml-window -lsfml-system && ./SGS
