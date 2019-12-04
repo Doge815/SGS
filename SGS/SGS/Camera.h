@@ -10,6 +10,7 @@ private:
     sf::RenderWindow *window;
     World *world;
     sf::CircleShape shape;
+    sf::Text text;
 public:
     Camera(sf::RenderWindow *window, World *world);
     void DrawImage();

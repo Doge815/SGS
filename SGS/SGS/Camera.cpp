@@ -33,11 +33,11 @@ void Camera::DrawImage()
     double OffsetX = - Biggest->GetPosition()[0] + window->getSize().x / 2 - Biggest->GetRad();
     double OffsetY = - Biggest->GetPosition()[1] + window->getSize().y / 2 - Biggest->GetRad();
     for (size_t i = 0; i < world->GetNumberOfParticles(); i++)
-		{
-            if(particles[i] == nullptr) continue;
-			double* a = particles[i]->GetPosition();
-			shape.setPosition(a[0] + OffsetX, a[1] + OffsetY);
-            shape.setRadius(std::ceil(particles[i]->GetRad()));
-			window->draw(shape);
-		}
+    {
+        if(particles[i] == nullptr) continue;
+		double* a = particles[i]->GetPosition();
+		shape.setPosition(a[0] + OffsetX, a[1] + OffsetY);
+        shape.setRadius(std::ceil(particles[i]->GetRad()));
+		window->draw(shape);
+	}
 }

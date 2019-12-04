@@ -95,7 +95,7 @@ void World::CalcVelocity()
 
 				double r = std::sqrt(std::pow(p2[0] - p1[0], 2) + std::pow(p2[1] - p1[1], 2));
 				
-				double f = m1 * m2 / std::pow(r, 2) / 100000;
+				double f = m1 * m2 / std::pow(r, 2) / 10000;
 				double a = std::atan2(p2[1] - p1[1], p2[0] - p1[0]);
 				double fx = std::cos(a) * f / m1;
 				double fy = std::sin(a) * f / m1;

@@ -8,7 +8,7 @@
 int main()
 {
     sf::RenderWindow *window = new sf::RenderWindow(sf::VideoMode(500, 500), "SGS", sf::Style::Titlebar | sf::Style::Close);
-	World *world = new World(100, 500, 100);
+	World *world = new World(200, 500, 10);
     Camera *camera = new Camera(window, world); 
     while (window->isOpen())
     {
