@@ -3,6 +3,7 @@
 #include "Particle.h"
 #include <math.h>
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 Camera::Camera(sf::RenderWindow *window, World *world)
 {
@@ -14,10 +15,16 @@ Camera::Camera(sf::RenderWindow *window, World *world)
 
 void Camera::DrawImage()
 {
-    Particle **particles;
-    Particle *Biggest = particles[0];
+    Particle **particles = world->GetParticles();
+    Particle *Biggest = nullptr;
     for(int i = 0; i < world->GetNumberOfParticles(); i++)
     {
+        if(particles[i] == nullptr) continue;
+        if(Biggest == nullptr)
+        {
+            Biggest = particles[i];
+            continue;
+        }
         if(particles[i]->GetMass() > Biggest->GetMass())
         {
             Biggest = particles[i];
@@ -25,7 +32,6 @@ void Camera::DrawImage()
     }
     double OffsetX = - Biggest->GetPosition()[0] + window->getSize().x / 2;
     double OffsetY = - Biggest->GetPosition()[1] + window->getSize().y / 2;
-
     for (size_t i = 0; i < world->GetNumberOfParticles(); i++)
 		{
             if(particles[i] == nullptr) continue;
