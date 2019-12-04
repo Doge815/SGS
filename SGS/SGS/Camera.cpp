@@ -30,8 +30,8 @@ void Camera::DrawImage()
             Biggest = particles[i];
         }
     }
-    double OffsetX = - Biggest->GetPosition()[0] + window->getSize().x / 2;
-    double OffsetY = - Biggest->GetPosition()[1] + window->getSize().y / 2;
+    double OffsetX = - Biggest->GetPosition()[0] + window->getSize().x / 2 - Biggest->GetRad();
+    double OffsetY = - Biggest->GetPosition()[1] + window->getSize().y / 2 - Biggest->GetRad();
     for (size_t i = 0; i < world->GetNumberOfParticles(); i++)
 		{
             if(particles[i] == nullptr) continue;
