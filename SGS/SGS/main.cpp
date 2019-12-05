@@ -2,6 +2,7 @@
 #include "World.h"
 #include "Particle.h"
 #include <iostream>
+#include <string>
 #include <math.h>
 #include "Camera.h"
 
@@ -17,6 +18,15 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window->close();
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+            {
+                camera->ZoomIn();
+                std::cout << std::to_string(camera->GetZoom()) << std::endl;
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+            {
+                camera->ZoomOut();
+            }
         }
 
         world->Step();

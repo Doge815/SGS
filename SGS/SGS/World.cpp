@@ -12,7 +12,7 @@ World::World(int numberOfParticles, float area, float massBase)
 {
 	srand(time(NULL));
 	World::numberOfParticles = numberOfParticles;
-	World::particles = { new Particle*[numberOfParticles] };
+	particles = { new Particle*[numberOfParticles] };
     for (size_t i = 0; i < numberOfParticles; i++)
     {
 		double theta	= ((double)rand() / (RAND_MAX));
@@ -45,9 +45,9 @@ void World::Step()
 
 void World::MergeParticles()
 {
-	for (size_t i = 0; i < World::numberOfParticles; i++)
+	for (size_t i = 0; i < numberOfParticles; i++)
 	{
-		for (size_t u = 0; u < World::numberOfParticles; u++)
+		for (size_t u = 0; u < numberOfParticles; u++)
 		{
 			if(i != u && particles[i] != nullptr && particles[u] != nullptr)
 			{
@@ -95,7 +95,7 @@ void World::CalcVelocity()
 
 				double r = std::sqrt(std::pow(p2[0] - p1[0], 2) + std::pow(p2[1] - p1[1], 2));
 				
-				double f = m1 * m2 / std::pow(r, 2) / 10000;
+				double f = m1 * m2 / std::pow(r, 2) / 1000;
 				double a = std::atan2(p2[1] - p1[1], p2[0] - p1[0]);
 				double fx = std::cos(a) * f / m1;
 				double fy = std::sin(a) * f / m1;
