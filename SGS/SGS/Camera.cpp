@@ -13,6 +13,7 @@ Camera::Camera(sf::RenderWindow *window, World *world)
     Camera::shape = sf::CircleShape(2);
     shape.setFillColor(sf::Color::White);
     Zoom = 1;
+    FixedZoom = true;
 }
 
 void Camera::DrawImage()
@@ -52,7 +53,7 @@ void Camera::DrawImage()
             if(dd > d) d = dd;
             if(d > dist) dist = d;
         }
-        Zoom = window->getSize().x  / dist / 2;
+        Zoom = window->getSize().x  / dist / 4;
     }
     double OffsetX = - biggest->GetPosition()[0] * Zoom + window->getSize().x / 2 - biggest->GetRad();
     double OffsetY = - biggest->GetPosition()[1] * Zoom + window->getSize().y / 2 - biggest->GetRad();
@@ -105,4 +106,14 @@ void Camera::SetFixedZoom(bool fixed)
 bool Camera::GetFixedZoom()
 {
     return FixedZoom;
+}
+
+void Camera::SetTarget(CameraTarget target)
+{
+    Camera::target = target;
+}
+
+CameraTarget Camera::GetTarget()
+{
+    return target;
 }

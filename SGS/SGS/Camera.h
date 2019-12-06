@@ -4,6 +4,8 @@
 #include "World.h"
 #include "Particle.h"
 
+enum CameraTarget { Middle, CenterOfMass, High };
+
 class Camera
 {
 private:
@@ -12,6 +14,7 @@ private:
     sf::CircleShape shape;
     double Zoom;
     bool FixedZoom;
+    CameraTarget target = High;
 public:
     Camera(sf::RenderWindow *window, World *world);
     void DrawImage();
@@ -20,4 +23,7 @@ public:
     double GetZoom();
     void SetFixedZoom(bool fixed);
     bool GetFixedZoom();
+    void SetTarget(CameraTarget target);
+    CameraTarget GetTarget();
+
 };

@@ -93,14 +93,18 @@ void World::CalcVelocity()
 				double* p2 = particles[u]->GetPosition();
 				double  m2 = particles[u]->GetMass();
 
-				double r = std::sqrt(std::pow(p2[0] - p1[0], 2) + std::pow(p2[1] - p1[1], 2));
+				double xDiff = p2[0] - p1[0];
+				double yDiff = p2[1] - p1[1];
+
+				double r = xDiff*xDiff + yDiff*yDiff;
 				
-				double f = m2 / std::pow(r, 2) / 1000;
-				double a = std::atan2(p2[1] - p1[1], p2[0] - p1[0]);
-				double fx = std::cos(a) * f;
-				double fy = std::sin(a) * f;
-				v1[0] += fx;
-				v1[1] += fy;
+				const double G = 0.001;
+				const double E = 200;
+
+				double forceFac = G * m2 / std::pow(r + E, 1.5);
+
+				v1[0] += xDiff * forceFac;
+				v1[1] += yDiff * forceFac;
 			}
 		}
 		particles[i]->SetVelocity(v1[0], v1[1]);
