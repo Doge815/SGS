@@ -9,6 +9,7 @@ private:
 	int numberOfParticles;
 public:
     World(int numberOfParticles, float area, float massBase);
+    void AddParticle(Particle *p);
     void Step();
     Particle** GetParticles();
 	int GetNumberOfParticles();

@@ -36,9 +36,21 @@ World::~World()
 	delete[] World::particles;
 }
 
+void World::AddParticle(Particle *p)
+{
+	Particle **ps = GetParticles();
+	particles = { new Particle*[numberOfParticles + 1] };
+	for (size_t i = 0; i < numberOfParticles; i++)
+	{
+		particles[i] = ps[i];
+	}
+	particles[numberOfParticles] = p;
+	numberOfParticles++;
+}
+
 void World::Step()
 {
-	MergeParticles();
+	//MergeParticles();
 	CalcVelocity();
 	ApplyVelocity();
 }

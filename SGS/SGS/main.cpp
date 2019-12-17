@@ -6,10 +6,22 @@
 #include <math.h>
 #include "Camera.h"
 
+const int size = 500;
+
 int main()
 {
-    sf::RenderWindow *window = new sf::RenderWindow(sf::VideoMode(500, 500), "SGS", sf::Style::Titlebar | sf::Style::Close);
-	World *world = new World(200, 500, 10);
+    sf::RenderWindow *window = new sf::RenderWindow(sf::VideoMode(size, size), "SGS", sf::Style::Titlebar | sf::Style::Close);
+	World *world;
+    #if true
+    world = new World(200, size, 10);
+    #else
+    world = new World(0, size, 0);
+    Particle *base = new Particle();
+    base->SetVelocity(0,0);
+    base->SetPosition(0, 0);
+    base->SetMass(100);
+    world->AddParticle(base);
+    #endif
     Camera *camera = new Camera(window, world); 
     while (window->isOpen())
     {
@@ -26,6 +38,17 @@ int main()
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
             {
                 camera->ZoomOut();
+            }
+            if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+            {
+                //Todo: Code should be in World, not working if zoom != 1
+                Particle *b = new Particle();
+                std::cout << event.mouseButton.x - size/2<< ", " << event.mouseButton.x - size/2<< std::endl;
+                b->SetPosition(event.mouseButton.x - size/2, event.mouseButton.y - size/2);
+                b->SetVelocity(0,0);
+                //b->SetVelocity(event.mouseButton.y - size/10000, event.mouseButton.x - size/10000);
+                b->SetMass(100);
+                world->AddParticle(b);
             }
         }
 
