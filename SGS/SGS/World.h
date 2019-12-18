@@ -7,8 +7,11 @@ class World
 private:
     Particle **particles;
 	int numberOfParticles;
+    int area;
+    int dimensions;
 public:
-    World(int numberOfParticles, float area, float massBase);
+    World(float area, int dimensions);
+    void InitWorld(int numberOfParticles, float massBase);
     void AddParticle(Particle *p);
     void Step();
     Particle** GetParticles();
@@ -16,5 +19,6 @@ public:
     void MergeParticles();
     void CalcVelocity();
     void ApplyVelocity();
+    int GetDimensions();
     ~World();
 };

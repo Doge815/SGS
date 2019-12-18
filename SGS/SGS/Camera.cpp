@@ -35,7 +35,7 @@ void Camera::DrawImage()
     {
         if(particles[i] == nullptr) continue;
 		double* a = particles[i]->GetPosition();
-		shape.setPosition(a[0]*Zoom + OffsetX, a[1]*Zoom + OffsetY);
+		shape.setPosition(a[0]*Zoom + Offset[0], a[1]*Zoom + Offset[1]);
         shape.setRadius(std::ceil(particles[i]->GetRad()));
 		window->draw(shape);
 	}
@@ -126,44 +126,43 @@ void Camera::CalcOffset()
         }
         Zoom = window->getSize().x  / dist / 2.5f;
     }
-    OffsetX = - biggest->GetPosition()[0] * Zoom + window->getSize().x / 2 - biggest->GetRad();
-    OffsetY = - biggest->GetPosition()[1] * Zoom + window->getSize().y / 2 - biggest->GetRad();
+    for (size_t i = 0; i < world->GetDimensions(); i++)
+    {
+        Offset[i] = biggest->GetPosition()[i] * Zoom + window->getSize().x / 2 - biggest->GetRad();
+    }
 }
 
-inline sf::Vector2f Camera::WorldToScreen(sf::Vector2f p)
+double* Camera::WorldToScreen(double* p)
 {
-    return sf::Vector2f(ScreenToWorldX(p.x), ScreenToWorldY(p.y));
+    double* r = {new double [world->GetDimensions()]};
+    try
+    {
+        for(size_t i = 0; i < world->GetDimensions(); i++)
+        {
+            r[i] = p[i]*Zoom + Offset[i];
+        }
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    return r;
+    
 }
 
-inline sf::Vector2f Camera::WorldToScreen(double* p)
+double* Camera::ScreenToWorld(double* p)
 {
-    return sf::Vector2f(WorldToScreenX(p[0]), WorldToScreenY(p[1]));
-}
-
-inline double Camera::WorldToScreenX(double x)
-{
-    return x*Zoom + OffsetX;
-}
-inline double Camera::WorldToScreenY(double y)
-{
-    return y*Zoom + OffsetY;
-}
-
-inline sf::Vector2f Camera::ScreenToWorld(sf::Vector2f p)
-{
-    return sf::Vector2f(ScreenToWorldX(p.x), ScreenToWorldY(p.y));
-}
-
-inline sf::Vector2f Camera::ScreenToWorld(double* p)
-{
-    return sf::Vector2f(ScreenToWorldX(p[0]), ScreenToWorldY(p[1]));
-}
-
-inline double Camera::ScreenToWorldX(double x)
-{
-    return (x - OffsetX) / Zoom;
-}
-inline double Camera::ScreenToWorldY(double y)
-{
-    return (y - OffsetY) / Zoom;
+    double* r = {new double [world->GetDimensions()]};
+    try
+    {
+        for(size_t i = 0; i < world->GetDimensions(); i++)
+        {
+            r[i] = (p[i] - Offset[i]) / Zoom;
+        }
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    return r;
 }

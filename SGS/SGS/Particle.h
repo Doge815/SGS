@@ -4,13 +4,15 @@
 class Particle
 {
 private:
-    double *position;
-    double *velocity;
+    int dimensions;
+    double* position;
+    double* velocity;
 	double mass;
+    
 public:
-    Particle();
-	void SetPosition(double x, double y);
-    void SetVelocity(double x, double y);
+    Particle(int dimensions);
+	void SetPosition(double* p);
+    void SetVelocity(double* v);
     void SetMass(double mass);
 
 	double *GetPosition();

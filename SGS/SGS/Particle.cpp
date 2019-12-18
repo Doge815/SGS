@@ -3,18 +3,29 @@
 #include "Particle.h"
 #include <math.h>
 
-Particle::Particle()
+Particle::Particle(int dimensions)
 {
+	Particle::dimensions = dimensions;
 }
 
-void Particle::SetPosition(double x, double y)
+void Particle::SetPosition(double* p)
 {
-	Particle::position = { new double[2]{x, y} };
+	Particle::position = { new double[dimensions] };
+	for (size_t i = 0; i < dimensions; i++)
+	{
+		position[i] = p[i];
+	}
+	
 }
 
-void Particle::SetVelocity(double x, double y)
+void Particle::SetVelocity(double* v)
 {
-	Particle::velocity = { new double[2]{x, y} };
+	Particle::velocity = { new double[dimensions] };
+	for (size_t i = 0; i < dimensions; i++)
+	{
+		velocity[i] = v[i];
+	}
+	
 }
 
 void Particle::SetMass(double mass)
