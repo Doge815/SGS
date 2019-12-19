@@ -30,23 +30,27 @@ void World::InitWorld(int numberOfParticles, float massBase)
 
 		while(true)
 		{
-			for (int i = 0; i < dimensions; i++)
+			distSq = 0;
+			for (size_t u = 0; u < dimensions; u++)
 			{
-				pos[i] = rand();
+				pos[u] = ((double)rand()) / (double)RAND_MAX;
 			}
 
-			for (int i = 0; i < dimensions; i++){
-				distSq += pos[i] * pos[i];
+			for (size_t u = 0; u < dimensions; u++){
+				distSq += pos[u] * pos[u];
 			}
 
 			if (distSq <= 1) break;
 		}
-
-		double dist = std::sqrt(distSq) * 2 / area;
+		for (size_t u = 0; u < dimensions; u++)
+		{
+			pos[u] = pos[u] * 2 - 1;
+		}
+		double dist = std::sqrt(distSq) * area / 2;
 
 		for (size_t u = 0; u < dimensions; u++)
 		{
-			pos[u] /= dist;
+			pos[u] *= dist;
 		}
 		double* vel = {new double[dimensions]};
 		for (size_t u = 0; u < dimensions; u++)
@@ -79,7 +83,7 @@ void World::AddParticle(Particle *p)
 
 void World::Step()
 {
-	//MergeParticles();
+	MergeParticles();
 	CalcVelocity();
 	ApplyVelocity();
 }
@@ -181,4 +185,9 @@ int World::GetNumberOfParticles()
 Particle** World::GetParticles()
 {
 	return World::particles;
+}
+
+int World::GetArea()
+{
+	return area;
 }

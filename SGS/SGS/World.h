@@ -20,5 +20,6 @@ public:
     void CalcVelocity();
     void ApplyVelocity();
     int GetDimensions();
+    int GetArea();
     ~World();
 };

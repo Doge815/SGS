@@ -22,8 +22,7 @@ int main()
     base->SetMass(100);
     world->AddParticle(base);
     #endif
-    std::cout << "a" << std::endl;
-    Camera *camera = new Camera(window, world); 
+    Camera *camera = new Camera(window, world);
     while (window->isOpen())
     {
         sf::Event event;

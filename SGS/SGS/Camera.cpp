@@ -29,8 +29,8 @@ void Camera::DrawImage()
         }
     }
     if(alive == 0) return;
-    
     CalcOffset();
+    std::cout << "b" << std::endl;
     for (size_t i = 0; i < world->GetNumberOfParticles(); i++)
     {
         if(particles[i] == nullptr) continue;
@@ -112,6 +112,7 @@ void Camera::CalcOffset()
             biggest = particles[i];
         }
     }
+    std::cout << "a" << std::endl;
     if(FixedZoom)
     {
         Particle *FarAway = nullptr;
@@ -119,17 +120,19 @@ void Camera::CalcOffset()
         for(int i = 0; i < world->GetNumberOfParticles(); i++)
         {
             if(particles[i] == nullptr) continue;
+            //all dims!!!
             double d = std::abs(particles[i]->GetPosition()[0] - biggest->GetPosition()[0]);
             double dd = std::abs(particles[i]->GetPosition()[1] - biggest->GetPosition()[1]);
             if(dd > d) d = dd;
             if(d > dist) dist = d;
         }
-        Zoom = window->getSize().x  / dist / 2.5f;
+        Zoom = world->GetArea() / dist / 2.5f;
     }
     for (size_t i = 0; i < world->GetDimensions(); i++)
     {
         Offset[i] = biggest->GetPosition()[i] * Zoom + window->getSize().x / 2 - biggest->GetRad();
     }
+    std::cout << "a" << std::endl;
 }
 
 double* Camera::WorldToScreen(double* p)
