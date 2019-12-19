@@ -33,7 +33,7 @@ void World::InitWorld(int numberOfParticles, float massBase)
 			distSq = 0;
 			for (size_t u = 0; u < dimensions; u++)
 			{
-				pos[u] = ((double)rand()) / (double)RAND_MAX;
+				pos[u] = ((double)rand()) / (double)RAND_MAX * 2 - 1;
 			}
 
 			for (size_t u = 0; u < dimensions; u++){
@@ -41,10 +41,6 @@ void World::InitWorld(int numberOfParticles, float massBase)
 			}
 
 			if (distSq <= 1) break;
-		}
-		for (size_t u = 0; u < dimensions; u++)
-		{
-			pos[u] = pos[u] * 2 - 1;
 		}
 		double dist = std::sqrt(distSq) * area / 2;
 
@@ -55,7 +51,7 @@ void World::InitWorld(int numberOfParticles, float massBase)
 		double* vel = {new double[dimensions]};
 		for (size_t u = 0; u < dimensions; u++)
 		{
-			vel[u] = (pos[u] - area / 2) / 5000;
+			vel[u] = pos[u]/ 500;
 		}
 		World::particles[i] = new Particle(dimensions);
 		World::particles[i]->SetPosition(pos);

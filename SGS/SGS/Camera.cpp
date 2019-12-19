@@ -19,7 +19,6 @@ Camera::Camera(sf::RenderWindow *window, World *world)
 void Camera::DrawImage()
 {
     Particle **particles = world->GetParticles();
-    Particle *biggest = nullptr;
     int alive = world->GetNumberOfParticles();
     for(int i = 0; i < world->GetNumberOfParticles(); i++)
     {
@@ -113,7 +112,7 @@ void Camera::CalcOffset()
         }
     }
     std::cout << "a" << std::endl;
-    if(FixedZoom)
+    if(false)
     {
         Particle *FarAway = nullptr;
         double dist;
@@ -130,7 +129,7 @@ void Camera::CalcOffset()
     }
     for (size_t i = 0; i < world->GetDimensions(); i++)
     {
-        Offset[i] = biggest->GetPosition()[i] * Zoom + window->getSize().x / 2 - biggest->GetRad();
+        Offset[i] = -biggest->GetPosition()[i] * Zoom + world->GetArea() / 2 - biggest->GetRad();
     }
     std::cout << "a" << std::endl;
 }
