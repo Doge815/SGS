@@ -5,6 +5,7 @@
 #include "Particle.h"
 
 enum CameraTarget { Middle, CenterOfMass, High };
+enum CameraType { Ortographic, D3, D4Flat, D4Color };
 
 class Camera
 {

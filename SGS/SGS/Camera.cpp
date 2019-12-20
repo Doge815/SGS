@@ -93,44 +93,79 @@ CameraTarget Camera::GetTarget()
 
 void Camera::CalcOffset()
 {
-    Particle **particles = world->GetParticles();
-    Particle *biggest = nullptr;
-    for(int i = 0; i < world->GetNumberOfParticles(); i++)
+    Particle** particles = world->GetParticles();
+    switch (Camera::target)
     {
-        if(particles[i] == nullptr) 
+    case High:
         {
-            continue;
+            Particle *biggest = nullptr;
+            for(int i = 0; i < world->GetNumberOfParticles(); i++)
+            {
+                if(particles[i] == nullptr) 
+                {
+                    continue;
+                }
+                if(biggest == nullptr)
+                {
+                    biggest = particles[i];
+                    continue;
+                }
+                if(particles[i]->GetMass() > biggest->GetMass())
+                {
+                    biggest = particles[i];
+                }
+            }
+            if(FixedZoom)
+            {
+                Particle *FarAway = nullptr;
+                double dist;
+                for(int i = 0; i < world->GetNumberOfParticles(); i++)
+                {
+                if(particles[i] == nullptr) continue;
+                    //TODO: all dims!!!
+                    double d = std::abs(particles[i]->GetPosition()[0] - biggest->GetPosition()[0]);
+                    double dd = std::abs(particles[i]->GetPosition()[1] - biggest->GetPosition()[1]);
+                    if(dd > d) d = dd;
+                    if(d > dist) dist = d;
+                }
+                Zoom = world->GetArea() / dist / 2.5f;
+            }
+            for (size_t i = 0; i < world->GetDimensions(); i++)
+            {
+                Offset[i] = -biggest->GetPosition()[i] * Zoom + world->GetArea() / 2 - biggest->GetRad() * Zoom;
+            }
         }
-        if(biggest == nullptr)
+        break;
+    case Middle:
+    {
+        Particle*** borders = {new Particle** [world->GetDimensions()]};
+        for(size_t i = 0; i < world->GetDimensions(); i++)
         {
-            biggest = particles[i];
-            continue;
-        }
-        if(particles[i]->GetMass() > biggest->GetMass())
-        {
-            biggest = particles[i];
+            borders[i] = {new Particle*[2]{nullptr, nullptr}};
+            for (size_t u = 0; i < world->GetNumberOfParticles(); i++)
+            {
+                if(borders[i][0] == nullptr || 
+                    particles[u]->GetPosition()[i] - particles[u]->GetRad() < 
+                        borders[i][0]->GetPosition()[i] - borders[i][0]->GetRad())
+                {
+                    borders[i][0] = particles[u];
+                }
+                if(borders[i][1] == nullptr || 
+                    particles[u]->GetPosition()[i] * particles[u]->GetRad() > 
+                        borders[i][1]->GetPosition()[i] + borders[i][1]->GetRad())
+                {
+                    borders[i][1] = particles[u];
+                }
+            }
+            
         }
     }
-    if(true)
-    {
-        Particle *FarAway = nullptr;
-        double dist;
-        for(int i = 0; i < world->GetNumberOfParticles(); i++)
-        {
-            if(particles[i] == nullptr) continue;
-            //TODO: all dims!!!
-            double d = std::abs(particles[i]->GetPosition()[0] - biggest->GetPosition()[0]);
-            double dd = std::abs(particles[i]->GetPosition()[1] - biggest->GetPosition()[1]);
-            if(dd > d) d = dd;
-            if(d > dist) dist = d;
-        }
-        Zoom = world->GetArea() / dist / 2.5f;
+    break;
+    
+    default:
+        break;
     }
-    for (size_t i = 0; i < world->GetDimensions(); i++)
-    {
-
-        Offset[i] = -biggest->GetPosition()[i] * Zoom + world->GetArea() / 2 - biggest->GetRad() * Zoom;
-    }
+    
 }
 
 double* Camera::WorldToScreen(double* p)
