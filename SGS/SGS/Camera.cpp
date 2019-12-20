@@ -14,6 +14,7 @@ Camera::Camera(sf::RenderWindow *window, World *world)
     shape.setFillColor(sf::Color::White);
     Zoom = 1;
     FixedZoom = false;
+    Offset = {new double[world->GetDimensions()]};
 }
 
 void Camera::DrawImage()
@@ -29,13 +30,12 @@ void Camera::DrawImage()
     }
     if(alive == 0) return;
     CalcOffset();
-    std::cout << "b" << std::endl;
     for (size_t i = 0; i < world->GetNumberOfParticles(); i++)
     {
         if(particles[i] == nullptr) continue;
 		double* a = particles[i]->GetPosition();
 		shape.setPosition(a[0]*Zoom + Offset[0], a[1]*Zoom + Offset[1]);
-        shape.setRadius(std::ceil(particles[i]->GetRad()));
+        shape.setRadius(std::ceil(particles[i]->GetRad()*Zoom));
 		window->draw(shape);
 	}
 
@@ -50,9 +50,9 @@ void Camera::DrawImage()
     text.setCharacterSize(20);
     text.setStyle(sf::Text::Bold);
     text.setColor(sf::Color::White);
-    text.setPosition(0,0);
+    text.setPosition(5,5);
 
-    text.setString("Particles: " + std::to_string(alive));
+    text.setString("Particles: " + std::to_string(alive) + "\nZoom: " + std::to_string(Zoom));
 
     window->draw(text);
 }
@@ -111,15 +111,14 @@ void Camera::CalcOffset()
             biggest = particles[i];
         }
     }
-    std::cout << "a" << std::endl;
-    if(false)
+    if(true)
     {
         Particle *FarAway = nullptr;
         double dist;
         for(int i = 0; i < world->GetNumberOfParticles(); i++)
         {
             if(particles[i] == nullptr) continue;
-            //all dims!!!
+            //TODO: all dims!!!
             double d = std::abs(particles[i]->GetPosition()[0] - biggest->GetPosition()[0]);
             double dd = std::abs(particles[i]->GetPosition()[1] - biggest->GetPosition()[1]);
             if(dd > d) d = dd;
@@ -129,9 +128,9 @@ void Camera::CalcOffset()
     }
     for (size_t i = 0; i < world->GetDimensions(); i++)
     {
-        Offset[i] = -biggest->GetPosition()[i] * Zoom + world->GetArea() / 2 - biggest->GetRad();
+
+        Offset[i] = -biggest->GetPosition()[i] * Zoom + world->GetArea() / 2 - biggest->GetRad() * Zoom;
     }
-    std::cout << "a" << std::endl;
 }
 
 double* Camera::WorldToScreen(double* p)

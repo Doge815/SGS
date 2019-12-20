@@ -51,7 +51,10 @@ void World::InitWorld(int numberOfParticles, float massBase)
 		double* vel = {new double[dimensions]};
 		for (size_t u = 0; u < dimensions; u++)
 		{
-			vel[u] = pos[u]/ 500;
+			auto p = pos[(u+1)%dimensions] / 4000;
+
+			if (u % 2 == 0) vel[u] = p;
+			else vel[u] = -p;
 		}
 		World::particles[i] = new Particle(dimensions);
 		World::particles[i]->SetPosition(pos);
@@ -99,10 +102,17 @@ void World::MergeParticles()
 			{
 				double* p1 = particles[i]->GetPosition();
 				double* p2 = particles[u]->GetPosition();
-				double r = std::sqrt(std::pow(p2[0] - p1[0], 2) + std::pow(p2[1] - p1[1], 2));
+				double r = 0;
+				for (size_t o = 0; o < dimensions; o++)
+				{
+					r += std::pow(p2[o] - p1[o],2);
+				}
+				
+				r = std::sqrt(r);
 
 				if(r <= particles[i]->GetRad() + particles[u]->GetRad())
 				{
+					#if false
 					double* v1 = particles[i]->GetVelocity();
 					double  m1 = particles[i]->GetMass();
 					double* v2 = particles[u]->GetVelocity();
@@ -116,6 +126,32 @@ void World::MergeParticles()
 					particles[u]->SetVelocity(v2);
 					particles[u]->SetPosition(p2);
 					particles[i] = nullptr;
+					#else
+					double* v = {new double[dimensions]};
+					double* v1 = particles[i]->GetVelocity();
+					double  m1 = particles[i]->GetMass();
+					double* v2 = particles[u]->GetVelocity();
+					double  m2 = particles[u]->GetMass();
+					for (size_t o = 0; o < dimensions; o++)
+					{
+						double Eges = (m1*std::pow(v1[o],2)/2)+(m2*std::pow(v2[o],2)/2);
+						if(Eges >= 0)
+						{
+							v[o] = std::sqrt(2*Eges / (m1 + m2));
+						}
+						else
+						{
+							v[o] = -std::sqrt(2*-Eges / (m1 + m2));	
+						}
+					}
+					particles[i]->SetMass(m1 + m2);
+					particles[i]->SetVelocity(v);
+					if(m2 > m1)
+					{
+						particles[i]->SetPosition(p2);
+					}
+					particles[u] = nullptr;
+					#endif
 				}
 			}
 		}

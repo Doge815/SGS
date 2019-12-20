@@ -7,7 +7,7 @@
 #include "Camera.h"
 
 const int size = 500;
-const int dimensions = 3;
+const int dimensions = 2;
 
 int main()
 {
