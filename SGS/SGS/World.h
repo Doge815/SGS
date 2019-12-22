@@ -1,5 +1,4 @@
 #pragma once
-#include<vector>
 #include"Particle.h"
 
 class World
@@ -7,19 +6,26 @@ class World
 private:
     Particle **particles;
 	int numberOfParticles;
-    int area;
     int dimensions;
 public:
+    #pragma region Con-/Destructor
     World(float area, int dimensions);
-    void InitWorld(int numberOfParticles, float massBase);
-    void AddParticle(Particle *p);
-    void Step();
+    ~World();
+	#pragma endregion  Con-/Destructor
+	
+	#pragma region Gets&Sets
+    int GetDimensions();
+    int GetArea();
     Particle** GetParticles();
-	int GetNumberOfParticles();
+    int GetNumberOfParticles();
+	#pragma  endregion  Gets&Sets
+
+	#pragma region Calc
+    void InitWorld(int numberOfParticles, float massBase, float area);
+    void AddParticle(Particle* p);
+    void Step();
     void MergeParticles();
     void CalcVelocity();
     void ApplyVelocity();
-    int GetDimensions();
-    int GetArea();
-    ~World();
+	#pragma endregion Calc
 };

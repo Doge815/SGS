@@ -3,7 +3,6 @@
 #include "Particle.h"
 #include <iostream>
 #include <string>
-#include <math.h>
 #include "Camera.h"
 
 const int size = 500;
@@ -14,7 +13,7 @@ int main()
     sf::RenderWindow *window = new sf::RenderWindow(sf::VideoMode(size, size), "SGS", sf::Style::Titlebar | sf::Style::Close);
 	World *world = new World(size, dimensions);
     #if true
-    world->InitWorld(200, 10);
+    world->InitWorld(200, 10, size);
     #else
     Particle *base = new Particle();
     base->SetVelocity(0,0);

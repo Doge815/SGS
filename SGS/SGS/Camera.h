@@ -2,7 +2,6 @@
 
 #include <SFML/Graphics.hpp>
 #include "World.h"
-#include "Particle.h"
 
 enum CameraTarget { Middle, CenterOfMass, High };
 enum CameraType { Ortographic, D3, D4Flat, D4Color };
@@ -19,16 +18,24 @@ private:
     CameraTarget target = High;
     void CalcOffset();
 public:
-    Camera(sf::RenderWindow *window, World *world);
-    void DrawImage();
-    void ZoomIn();
+    #pragma region Con-/Destructor
+    Camera(sf::RenderWindow* window, World* world);
+	#pragma endregion Con-/Destructor
+
+	#pragma region Gets&Sets
+	void ZoomIn();
     void ZoomOut();
+    void SetZoom(double zoom);
     double GetZoom();
     void SetFixedZoom(bool fixed);
     bool GetFixedZoom();
     void SetTarget(CameraTarget target);
     CameraTarget GetTarget();
+	#pragma endregion Gets&Sets
+
+	#pragma region Calc
+    void DrawImage();
     double* WorldToScreen(double* p);
     double* ScreenToWorld(double* p);
-
+	#pragma endregion Calc
 };
