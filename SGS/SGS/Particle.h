@@ -25,4 +25,3 @@ public:
     double GetRad();
 	#pragma endregion Gets&Sets
 };
-

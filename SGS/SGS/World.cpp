@@ -2,12 +2,13 @@
 
 #include "World.h"
 #include "Particle.h"
-#include <cmath>
+#include <math.h>
 #include <iostream>
-#include<ctime>
+#include<time.h>
 
-#pragma region Con-/Destructor
-World::World(const float area, int dimensions)
+double RandomFloat(double a, double b);
+
+World::World(int dimensions)
 {
 	srand(time(NULL));
 	World::numberOfParticles = 0;
@@ -15,33 +16,9 @@ World::World(const float area, int dimensions)
 	World::dimensions = dimensions;
 }
 
-World::~World()
+void World::InitWorld(int numberOfParticles, float massBase, float area)
 {
-	delete[] World::particles;
-}
-#pragma endregion Con-/Destructor
-
-#pragma region Gets&Sets
-inline int World::GetNumberOfParticles()
-{
-	return World::numberOfParticles;
-}
-
-inline Particle** World::GetParticles()
-{
-	return World::particles;
-}
-
-inline int World::GetDimensions()
-{
-	return dimensions;
-}
-#pragma endregion Gets&Sets
-
-#pragma region Calc
-void World::InitWorld(const int numberOfParticles, const float massBase, const float area)
-{
-	srand(time(nullptr));
+	srand(time(NULL));
 	World::numberOfParticles = numberOfParticles;
 	particles = { new Particle * [numberOfParticles] };
 	for (size_t i = 0; i < numberOfParticles; i++)
@@ -58,8 +35,7 @@ void World::InitWorld(const int numberOfParticles, const float massBase, const f
 				pos[u] = ((double)rand()) / (double)RAND_MAX * 2 - 1;
 			}
 
-			for (size_t u = 0; u < dimensions; u++)
-			{
+			for (size_t u = 0; u < dimensions; u++) {
 				distSq += pos[u] * pos[u];
 			}
 
@@ -86,6 +62,11 @@ void World::InitWorld(const int numberOfParticles, const float massBase, const f
 	}
 }
 
+World::~World()
+{
+	delete[] World::particles;
+}
+
 void World::AddParticle(Particle* p)
 {
 	Particle** ps = GetParticles();
@@ -103,6 +84,11 @@ void World::Step()
 	MergeParticles();
 	CalcVelocity();
 	ApplyVelocity();
+}
+
+int World::GetDimensions()
+{
+	return dimensions;
 }
 
 void World::MergeParticles()
@@ -221,4 +207,13 @@ void World::ApplyVelocity()
 		particles[i]->SetPosition(p);
 	}
 }
-#pragma endregion Calc
+
+int World::GetNumberOfParticles()
+{
+	return World::numberOfParticles;
+}
+
+Particle** World::GetParticles()
+{
+	return World::particles;
+}

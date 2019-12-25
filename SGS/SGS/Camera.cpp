@@ -6,7 +6,6 @@
 #include <iostream>
 #include <string>
 
-#pragma region Con-/Destructor
 Camera::Camera(sf::RenderWindow* window, World* world)
 {
     Camera::window = window;
@@ -14,54 +13,10 @@ Camera::Camera(sf::RenderWindow* window, World* world)
     Camera::shape = sf::CircleShape(2);
     shape.setFillColor(sf::Color::White);
     Zoom = 1;
-    FixedZoom = false;
+    FixedZoom = true;
     Offset = { new double[world->GetDimensions()] };
 }
-#pragma endregion Con-/Destructor
 
-#pragma region Gets&Sets
-inline void Camera::ZoomIn()
-{
-    Zoom *= 1.25f;
-}
-
-inline void Camera::ZoomOut()
-{
-    Zoom /= 1.25f;
-}
-
-inline void Camera::SetZoom(double zoom)
-{
-    Camera::Zoom = zoom;
-}
-
-inline double Camera::GetZoom()
-{
-    return Zoom;
-}
-
-inline void Camera::SetFixedZoom(bool fixed)
-{
-    FixedZoom = fixed;
-}
-
-inline bool Camera::GetFixedZoom()
-{
-    return FixedZoom;
-}
-
-inline void Camera::SetTarget(CameraTarget target)
-{
-    Camera::target = target;
-}
-
-inline CameraTarget Camera::GetTarget()
-{
-    return target;
-}
-#pragma endregion Gets&Sets
-
-#pragma region Calc
 void Camera::DrawImage()
 {
     Particle** particles = world->GetParticles();
@@ -101,6 +56,40 @@ void Camera::DrawImage()
     window->draw(text);
 }
 
+void Camera::ZoomIn()
+{
+    Zoom *= 1.25f;
+}
+
+void Camera::ZoomOut()
+{
+    Zoom /= 1.25f;
+}
+
+double Camera::GetZoom()
+{
+    return Zoom;
+}
+
+void Camera::SetFixedZoom(bool fixed)
+{
+    FixedZoom = fixed;
+}
+bool Camera::GetFixedZoom()
+{
+    return FixedZoom;
+}
+
+void Camera::SetTarget(CameraTarget target)
+{
+    Camera::target = target;
+}
+
+CameraTarget Camera::GetTarget()
+{
+    return target;
+}
+
 void Camera::CalcOffset()
 {
     Particle** particles = world->GetParticles();
@@ -138,11 +127,11 @@ void Camera::CalcOffset()
                 if (dd > d) d = dd;
                 if (d > dist) dist = d;
             }
-            Zoom = world->GetArea() / dist / 2.5f;
+            Zoom = window->getSize().x / dist / 2.5f;
         }
         for (size_t i = 0; i < world->GetDimensions(); i++)
         {
-            Offset[i] = -biggest->GetPosition()[i] * Zoom + world->GetArea() / 2 - biggest->GetRad() * Zoom;
+            Offset[i] = -biggest->GetPosition()[i] * Zoom + window->getSize().x / 2 - biggest->GetRad() * Zoom;
         }
     }
     break;
@@ -212,4 +201,3 @@ double* Camera::ScreenToWorld(double* p)
     }
     return r;
 }
-#pragma endregion Calc

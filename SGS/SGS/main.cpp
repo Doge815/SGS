@@ -11,7 +11,7 @@ const int dimensions = 2;
 int main()
 {
     sf::RenderWindow *window = new sf::RenderWindow(sf::VideoMode(size, size), "SGS", sf::Style::Titlebar | sf::Style::Close);
-	World *world = new World(size, dimensions);
+	World *world = new World(dimensions);
     #if true
     world->InitWorld(200, 10, size);
     #else

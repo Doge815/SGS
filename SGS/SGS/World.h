@@ -9,13 +9,12 @@ private:
     int dimensions;
 public:
     #pragma region Con-/Destructor
-    World(float area, int dimensions);
+    World(int dimensions);
     ~World();
 	#pragma endregion  Con-/Destructor
 	
 	#pragma region Gets&Sets
     int GetDimensions();
-    int GetArea();
     Particle** GetParticles();
     int GetNumberOfParticles();
 	#pragma  endregion  Gets&Sets

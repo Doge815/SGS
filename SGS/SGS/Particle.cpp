@@ -3,21 +3,12 @@
 #include "Particle.h"
 #include <cmath>
 
-#pragma region Con-/Destructor
 Particle::Particle(int dimensions)
 {
 	Particle::dimensions = dimensions;
 }
 
-Particle::~Particle()
-{
-	delete position;
-	delete velocity;
-}
-#pragma endregion Con-/Destructor
-
-#pragma region Gets&Sets
-inline void Particle::SetPosition(double* p)
+void Particle::SetPosition(double* p)
 {
 	Particle::position = { new double[dimensions] };
 	for (size_t i = 0; i < dimensions; i++)
@@ -27,7 +18,7 @@ inline void Particle::SetPosition(double* p)
 
 }
 
-inline void Particle::SetVelocity(double* v)
+void Particle::SetVelocity(double* v)
 {
 	Particle::velocity = { new double[dimensions] };
 	for (size_t i = 0; i < dimensions; i++)
@@ -37,29 +28,33 @@ inline void Particle::SetVelocity(double* v)
 
 }
 
-inline void Particle::SetMass(double mass)
+void Particle::SetMass(double mass)
 {
 	Particle::mass = mass;
 }
 
-inline double* Particle::GetPosition()
+double* Particle::GetPosition()
 {
 	return Particle::position;
 }
 
-inline double* Particle::GetVelocity()
+double* Particle::GetVelocity()
 {
 	return Particle::velocity;
 }
 
-inline double Particle::GetMass()
+double Particle::GetMass()
 {
 	return Particle::mass;
 }
 
-inline double Particle::GetRad()
+double Particle::GetRad()
 {
-	//TODO: All DIMS!
 	return std::sqrt(GetMass() / M_PI);
 }
-#pragma endregion Gets&Sets
+
+Particle::~Particle()
+{
+	delete position;
+	delete velocity;
+}
