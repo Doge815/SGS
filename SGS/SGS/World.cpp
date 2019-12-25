@@ -5,6 +5,7 @@
 #include <math.h>
 #include <iostream>
 #include<time.h>
+#include<Camera.h>
 
 double RandomFloat(double a, double b);
 
@@ -79,6 +80,21 @@ void World::AddParticle(Particle* p)
 	numberOfParticles++;
 }
 
+void World::AddParticleFromUI(double x, double y)
+{
+	Particle *b = new Particle(dimensions);
+    //std::cout << event.mouseButton.x - size/2<< ", " << event.mouseButton.x - size/2<< std::endl;
+    double* pos = {new double[dimensions]};
+	//Todo: Wrong, replace with global size
+    pos[0] = x - 250;
+    pos[1] = y - 250;
+    b->SetPosition(cam->ScreenToWorld(pos));
+    b->SetVelocity({new double[dimensions]});
+    //b->SetVelocity(event.mouseButton.y - size/10000, event.mouseButton.x - size/10000);
+    b->SetMass(100);
+    AddParticle(b);
+}
+
 void World::Step()
 {
 	MergeParticles();
@@ -111,21 +127,6 @@ void World::MergeParticles()
 
 				if (r <= particles[i]->GetRad() + particles[u]->GetRad())
 				{
-#if false
-					double* v1 = particles[i]->GetVelocity();
-					double  m1 = particles[i]->GetMass();
-					double* v2 = particles[u]->GetVelocity();
-					double  m2 = particles[u]->GetMass();
-					if (m1 > m2)
-					{
-						v2 = v1;
-						p2 = p1;
-					}
-					particles[u]->SetMass(m1 + m2);
-					particles[u]->SetVelocity(v2);
-					particles[u]->SetPosition(p2);
-					particles[i] = nullptr;
-#else
 					double* v = { new double[dimensions] };
 					double* v1 = particles[i]->GetVelocity();
 					double  m1 = particles[i]->GetMass();
@@ -149,8 +150,8 @@ void World::MergeParticles()
 					{
 						particles[i]->SetPosition(p2);
 					}
+					delete particles[u];
 					particles[u] = nullptr;
-#endif
 				}
 			}
 		}
@@ -174,18 +175,22 @@ void World::CalcVelocity()
 				double* p2 = particles[u]->GetPosition();
 				double  m2 = particles[u]->GetMass();
 
-				double xDiff = p2[0] - p1[0];
-				double yDiff = p2[1] - p1[1];
-
-				double r = xDiff * xDiff + yDiff * yDiff;
+				double r = 0;
+				for (size_t o = 0; o < dimensions; o++)
+				{
+					r += std::pow(p2[o] - p1[o],2);
+				}
 
 				const double G = 0.001;
 				const double E = 200;
 
 				double forceFac = G * m2 / std::pow(r + E, 1.5);
 
-				v1[0] += xDiff * forceFac;
-				v1[1] += yDiff * forceFac;
+				for (size_t o = 0; o < dimensions; o++)
+				{
+					r += std::pow(p2[o] - p1[o],2);
+					v1[o] += (p2[o] - p1[o]) * forceFac;
+				}
 			}
 		}
 		particles[i]->SetVelocity(v1);
@@ -216,4 +221,13 @@ int World::GetNumberOfParticles()
 Particle** World::GetParticles()
 {
 	return World::particles;
+}
+
+void World::SetCamera(Camera* c)
+{
+	cam = c;
+}
+Camera* World::GetCamera()
+{
+	return cam;
 }

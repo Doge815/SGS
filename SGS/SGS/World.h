@@ -1,5 +1,6 @@
 #pragma once
 #include"Particle.h"
+#include "Camera.h"
 
 class World
 {
@@ -7,6 +8,7 @@ private:
     Particle **particles;
 	int numberOfParticles;
     int dimensions;
+    Camera* cam;
 public:
     #pragma region Con-/Destructor
     World(int dimensions);
@@ -17,6 +19,8 @@ public:
     int GetDimensions();
     Particle** GetParticles();
     int GetNumberOfParticles();
+    void SetCamera(Camera* c);
+    Camera* GetCamera();
 	#pragma  endregion  Gets&Sets
 
 	#pragma region Calc
@@ -26,5 +30,6 @@ public:
     void MergeParticles();
     void CalcVelocity();
     void ApplyVelocity();
+    void AddParticleFromUI(double x, double y);
 	#pragma endregion Calc
 };
